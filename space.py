@@ -4,6 +4,9 @@ from pyswarm import pso
 
 
 class area:
+    x_size = 0
+    y_size = 0
+
     def __init__(self, x_size, y_size, alpha, space_cord, wall_coord, people_coord):
         self.x_size = x_size
         self.y_size = y_size
