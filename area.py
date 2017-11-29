@@ -1,14 +1,10 @@
 import numpy as np
-from scipy import optimize
-from pyswarm import pso
+import sympy
 
 
 class Area:
 
-    x_size = 0
-    y_size = 0
-
-    def __init__(self, x_size, y_size, alpha, space_cord, walls_vector, people_vector):
+    def __init__(self, x_size, y_size, space_cord, walls_vector, people_vector):
         self.x_size = x_size
         self.y_size = y_size
         self.space_cord = space_cord

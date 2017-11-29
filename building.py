@@ -14,8 +14,6 @@ class Wall:
 
 
 class Building:
-    walls = np.array([])
-
     def __init__(self, walls_vector):
         self.walls_vector = walls_vector
 

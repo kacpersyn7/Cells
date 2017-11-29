@@ -3,7 +3,6 @@ import space as hp
 
 
 class Router:
-    users = np.array([])
 
     def __init__(self, x_coord, y_coord, max_power, name, max_range, users):
         self.x_coord = x_coord
