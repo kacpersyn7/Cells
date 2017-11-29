@@ -1,12 +1,25 @@
 import numpy as np
+import sympy
 
 
 class Area:
-    def __init__(self, x_size, y_size):
+
+    def __init__(self, x_size, y_size, space_cord, walls_vector, people_vector):
         self.x_size = x_size
         self.y_size = y_size
-        self.area = np.zeros((x_size, y_size))  # unnecessary, I think, or not
+        self.space_cord = space_cord
+        self.wall_coord = walls_vector
+        self.people_coord = people_vector
 
-    def generate_random(self, max_request):
-        self.area = np.random.randint(0, max_request, size=(self.x_size, self.y_size))
-        return self.area
+    def cells_conditions(self):
+        pass
+
+
+# numpy matrix with coords of walls
+# numpy matrix with coords of cells
+# numpy matrix with coords of people
+# numpy matrix with values of every area point
+# conditions for cells coords
+# idea - import from bitmap file
+def update_value(area, cells_coord):
+    pass
