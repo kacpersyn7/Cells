@@ -21,15 +21,14 @@ def generate_solution(current_area): # generuje rozwiazanie, czyli polozenia rut
 
 def generate_power_area(accespoint_area, max_range): # generuje obszar mocy XD, tj macierz z wartosciami mocy w kazdym punkcie
     new_area = np.zeros(accespoint_area.shape) # alokuje statycznie pamiec
-    for i in range(accespoint_area.shape[0] - 1): # iteruje ala C po calej macierzy
-        for j in range(accespoint_area.shape[1] - 1):
-
+    for i in range(accespoint_area.shape[0]): # iteruje ala C po calej macierzy
+        for j in range(accespoint_area.shape[1]):
             if accespoint_area[i][j] == 1: # jesli jest accespoint to oblicz dla niego moc
                 for m in range(-max_range, max_range+1): # przejdz po otoczeniu
                     for n in range(-max_range, max_range+1):
                         #print(m)
-                        #print(n)                 Debugowy syf
-                        #print()
+                        #print(n)                # Debugowy syf
+                        #print("dupa")
                         if((mat.sqrt(n*n + m*m)) <= max_range): # zawez otoczenie do "kuli"
                             #print(float(max_range))
                             #print(mat.sqrt(n*n + m*m))             Debugowy syf
@@ -77,8 +76,9 @@ def target_function(power_area, accesspoint_area, users_area, cost_of_accesspoin
 
 w = generate_area(5 ,5,12)
 d = generate_solution(w)
-power_map = generate_power_area(d, 2)
-user_map = generate_users_area(w)
+fixed = np.array([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,1]])
+power_map = generate_power_area(fixed, 2)
+user_map = generate_users_area(fixed)
 a = w.size
 wynik = target_function(power_map,d, user_map, 10)
 print(wynik)
