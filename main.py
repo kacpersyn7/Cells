@@ -1,90 +1,64 @@
 import numpy as np
-import random as rand
-import math as mat
+
+COLS = 20
+ROWS = 20
+
 
 def generate_area(x, y, resolution):
-    area = np.zeros((x,y))
+    area = np.zeros((x, y))
     return area
 
-def generate_solution(current_area): # generuje rozwiazanie, czyli polozenia ruterow a dokladnie bitmape
-    amount = rand.randint(0, current_area.size)
-    new_area = np.zeros(current_area.shape)
-    for i in range(amount):
-        not_equal=1
-        while(not_equal): # wylicza dopoki nie trafi na inne miejsce
-            x_coord = rand.randint(0,current_area.shape[0]-1) # losuje koordynaty
-            y_coord = rand.randint(0,current_area.shape[1]-1)
-            if new_area[x_coord][y_coord] == 0:
-                not_equal = 0
-                new_area[x_coord][y_coord] = 1
-    return new_area
 
-def generate_power_area(accespoint_area, max_range): # generuje obszar mocy XD, tj macierz z wartosciami mocy w kazdym punkcie
-    new_area = np.zeros(accespoint_area.shape) # alokuje statycznie pamiec
-    for i in range(accespoint_area.shape[0]): # iteruje ala C po calej macierzy
-        for j in range(accespoint_area.shape[1]):
-            if accespoint_area[i][j] == 1: # jesli jest accespoint to oblicz dla niego moc
-                for m in range(-max_range, max_range+1): # przejdz po otoczeniu
-                    for n in range(-max_range, max_range+1):
-                        #print(m)
-                        #print(n)                # Debugowy syf
-                        #print("dupa")
-                        if((mat.sqrt(n*n + m*m)) <= max_range): # zawez otoczenie do "kuli"
-                            #print(float(max_range))
-                            #print(mat.sqrt(n*n + m*m))             Debugowy syf
-                            if((i + n >= 0) & (i + n <= accespoint_area.shape[0]-1) & (j + m >= 0) & (j + m <= accespoint_area.shape[1]-1)): # zachowanie na brzegach obszaru
-                                if((n != 0) | (m!=0) ): # zawezenie do siasiedztwa ( chyba)
-                                    power = 10/(mat.sqrt((n)*(n) + (m)*(m))) # bieda wyliczenie mocy XD
-                                    if power > new_area[i+n][j+m]: # "wygrywa najsilniejszy"
-                                        new_area[i+n][j+m] = power
-    return new_area # zwraca obszar mocy
-
-def number_of_accesspoints(accesspoinnt_area): # wylicza liczbe kupionych (wylosowanych) ruterow
-    number = 0
-    for i in range(accesspoinnt_area.shape[0] - 1):
-        for j in range(accesspoinnt_area.shape[1] - 1):
-            if(accesspoinnt_area[i][j] == 1):
-                number = number + 1
-    return number
+def get_power(ap_x, ap_y, ue_x, ue_y, max_power):
+    distance = ((ue_x - ap_x) ** 2 + (ue_y - ap_y) ** 2).astype(float)
+    distance[np.where(distance == 0)[0]] = 0.5
+    print(distance)
+    return (1. / (distance)) * max_power
 
 
+def update_result_area(accesspoint_bitmap, result_area, cols=COLS, rows=ROWS, max_power=400):
+    accesspoint_ones = np.where(accesspoint_bitmap == 0)
+    new_result_area = np.copy(result_area)
+    for x, y in zip(accesspoint_ones[0], accesspoint_ones[1]):
+        temp_y, temp_x = np.ogrid[-x:cols - x, -y:rows - y]
+        mask_indexes = np.where(temp_x * temp_x + temp_y * temp_y <= 16)
+        new_result_area[mask_indexes] = get_power(x, y, mask_indexes[0], mask_indexes[1], max_power)
+        diff = np.where((new_result_area - result_area) < 0)
+        new_result_area[diff] = result_area[diff]
+        result_area = np.copy(new_result_area)
+    return new_result_area
 
 
-def generate_users_area(current_area): # generuje uzytkownikow, potrzebowalem do testow
-    amount = rand.randint(0, current_area.size)
-    new_area = np.zeros(current_area.shape)
-    for i in range(amount):
-        not_equal=1
-        while(not_equal):
-            x_coord = rand.randint(0,current_area.shape[0]-1)
-            y_coord = rand.randint(0,current_area.shape[1]-1)
-            if new_area[x_coord][y_coord] == 0:
-                not_equal = 0
-                new_area[x_coord][y_coord] = rand.randint(0,5) # losuj do 5 uzytkownikow
-    return new_area
+# def update_result_area(accesspoint_vect, result_area, cols=10, rows=10):
+#     for ap in accesspoint_vect:
+#         a = ap.x
+#         b = ap.y
+#         temp_y, temp_x = np.ogrid[-a:cols - a, -b:rows - b]
+#         mask_indexes = np.where(temp_x * temp_x + temp_y * temp_y <= ap.max_range)
+#         new_result_area = result_area
+#         new_result_area[mask_indexes] = ap.get_power(mask_indexes[0], mask_indexes[1])
+#         diff = np.where(new_result_area - result_area < 0)
+#         new_result_area[diff] = result_area[diff]
+#     return new_result_area
 
-def target_function(power_area, accesspoint_area, users_area, cost_of_accesspoint):
-    value = 0;
-    number = number_of_accesspoints(accesspoint_area)
-    for i in range(power_area.shape[0] - 1):
-        for j in range(power_area.shape[1] - 1):
-            value = value + 100*power_area[i][j]*users_area[i][j] # zysk jako moc*liczba uzytkownikow*100 nie wiem czemu
-        value = value - cost_of_accesspoint*number # odejmuje koszt accesspointow
-    return value
+def generate_individuals(n=10, cols=COLS, rows=ROWS):
+    individuals = np.zeros((n, cols, rows))
+    for i in range(n):
+        individuals[i] = (np.random.randint(0, 10, size=(cols, rows)))
+    return individuals
 
 
+def generate_users(max_request, cols=COLS, rows=ROWS):
+    return np.random.randint(0, max_request, size=(cols, rows))
 
-w = generate_area(5 ,5,12)
-d = generate_solution(w)
-fixed = np.array([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,1]])
-power_map = generate_power_area(fixed, 2)
-user_map = generate_users_area(fixed)
-a = w.size
-wynik = target_function(power_map,d, user_map, 10)
-print(wynik)
-print(d)
-print(number_of_accesspoints(d))
-print(2)
-print(1)
-print(power_map)
-print(wynik)
+
+def second_target_function(power_area, accesspoint_area, users_area, cost_of_accesspoint):
+    cost_function = np.sum(accesspoint_area == 0) * cost_of_accesspoint
+    print(np.sum(accesspoint_area == 0))
+    quality_function = np.sum(users_area * (power_area - users_area))
+    return quality_function - cost_function
+
+
+users = generate_users(250)
+aps = generate_individuals()
+power_a = np.zeros((COLS, ROWS))
