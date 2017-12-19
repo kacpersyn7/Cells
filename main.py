@@ -44,7 +44,8 @@ def number_of_accesspoints(accesspoinnt_area): # wylicza liczbe kupionych (wylos
     number = 0
     for i in range(accesspoinnt_area.shape[0] - 1):
         for j in range(accesspoinnt_area.shape[1] - 1):
-            number = number + 1
+            if(accesspoinnt_area[i][j] == 1):
+                number = number + 1
     return number
 
 
@@ -74,14 +75,15 @@ def target_function(power_area, accesspoint_area, users_area, cost_of_accesspoin
 
 
 
-w = generate_area(4 ,4 ,12)
+w = generate_area(5 ,5,12)
 d = generate_solution(w)
 power_map = generate_power_area(d, 2)
 user_map = generate_users_area(w)
 a = w.size
-wynik = target_function(power_map,d, user_map, 100)
+wynik = target_function(power_map,d, user_map, 10)
 print(wynik)
-print(user_map)
+print(d)
+print(number_of_accesspoints(d))
 print(2)
 print(1)
 print(power_map)
