@@ -6,12 +6,12 @@ def generate_area(x, y, resolution):
     area = np.zeros((x,y))
     return area
 
-def generate_solution(current_area):
+def generate_solution(current_area): # generuje rozwiazanie, czyli polozenia ruterow a dokladnie bitmape
     amount = rand.randint(0, current_area.size)
     new_area = np.zeros(current_area.shape)
     for i in range(amount):
         not_equal=1
-        while(not_equal):
+        while(not_equal): # wylicza dopoki nie trafi na inne miejsce
             x_coord = rand.randint(0,current_area.shape[0]-1) # losuje koordynaty
             y_coord = rand.randint(0,current_area.shape[1]-1)
             if new_area[x_coord][y_coord] == 0:
@@ -24,7 +24,7 @@ def generate_power_area(accespoint_area, max_range): # generuje obszar mocy XD, 
     for i in range(accespoint_area.shape[0] - 1): # iteruje ala C po calej macierzy
         for j in range(accespoint_area.shape[1] - 1):
 
-            if accespoint_area[i][j] == 1: # jesli jest accespoint to oblicz dla niego
+            if accespoint_area[i][j] == 1: # jesli jest accespoint to oblicz dla niego moc
                 for m in range(-max_range, max_range+1): # przejdz po otoczeniu
                     for n in range(-max_range, max_range+1):
                         #print(m)
@@ -40,7 +40,7 @@ def generate_power_area(accespoint_area, max_range): # generuje obszar mocy XD, 
                                         new_area[i+n][j+m] = power
     return new_area # zwraca obszar mocy
 
-def number_of_accesspoints(accesspoinnt_area): # wylicza liczbe kupionych ruterow
+def number_of_accesspoints(accesspoinnt_area): # wylicza liczbe kupionych (wylosowanych) ruterow
     number = 0
     for i in range(accesspoinnt_area.shape[0] - 1):
         for j in range(accesspoinnt_area.shape[1] - 1):
@@ -68,7 +68,7 @@ def target_function(power_area, accesspoint_area, users_area, cost_of_accesspoin
     number = number_of_accesspoints(accesspoint_area)
     for i in range(power_area.shape[0] - 1):
         for j in range(power_area.shape[1] - 1):
-            value = value + power_area[i][j]*users_area[i][j]
+            value = value + 100*power_area[i][j]*users_area[i][j] # zysk jako moc*liczba uzytkownikow*100 nie wiem czemu
         value = value - cost_of_accesspoint*number # odejmuje koszt accesspointow
     return value
 
