@@ -1,18 +1,20 @@
 from area import *
+from globals import *
 
 
 class AccessPoint(Area):
 
-    def __init__(self, area, max_power=10, max_range=10, access_area_fun=lambda x, y: x * x + y * y <= 16,
-                 dist_fun=lambda diff_x, diff_y: (diff_x * diff_x + diff_y * diff_y).astype(float)):
-        self.area = area
+    def __init__(self, max_power=10, max_range=10, access_area_fun=lambda x, y: x * x + y * y <= 16,
+                 dist_fun=lambda diff_x, diff_y: (diff_x * diff_x + diff_y * diff_y).astype(float),
+                 x_size=COLS, y_size=ROWS):
+        super().__init__(COLS, ROWS)
         self.max_power = max_power
         self.max_range = max_range
         self.activate_area = access_area_fun
         self.dist_fun = dist_fun
 
-    def generate_individual(self):
-        self.area.area = self.generate_random(1)
+    def generate_individual(self, probabilty):
+        self.area.area = self.generate_random(probabilty)
 
     # def generate_ap_individuals(self, n_of_individuals):
     #     individuals = np.zeros((n_of_individuals, self.area.x_size, self.area.y_size))
@@ -36,10 +38,10 @@ class AccessPoint(Area):
         return (1. / distance) * self.max_power
 
     def update_result_area(self, result_area):
-        accesspoints = np.where(self.area.area == 0)
+        accesspoints = np.where(self.area == 0)
         new_result_area = np.copy(result_area)
         for x, y in zip(accesspoints[0], accesspoints[1]):
-            temp_y, temp_x = np.ogrid[-x:self.area.size_x - x, -y:self.area.size_y - y]
+            temp_y, temp_x = np.ogrid[-x:self.x_size - x, -y:self.y_size - y]
             mask_indexes = np.where(self.activate_area(temp_x, temp_y))
             print(mask_indexes)
             new_result_area[mask_indexes] = self.get_power(x, y, mask_indexes[0], mask_indexes[1])
