@@ -16,30 +16,20 @@ def get_power(ap_x, ap_y, ue_x, ue_y, max_power):
     return (1. / (distance)) * max_power
 
 
-def update_result_area(accesspoint_bitmap, result_area, cols=COLS, rows=ROWS, max_power=400):
+def update_result_area(accesspoint_bitmap, result_area, cols=COLS, rows=ROWS, max_power=400,
+                       activation_area=lambda x, y: x * x + y * y <= 16):
     accesspoint_ones = np.where(accesspoint_bitmap == 0)
     new_result_area = np.copy(result_area)
     for x, y in zip(accesspoint_ones[0], accesspoint_ones[1]):
         temp_y, temp_x = np.ogrid[-x:cols - x, -y:rows - y]
-        mask_indexes = np.where(temp_x * temp_x + temp_y * temp_y <= 16)
+        mask_indexes = np.where(activation_area(temp_x, temp_y))
+        print(mask_indexes)
         new_result_area[mask_indexes] = get_power(x, y, mask_indexes[0], mask_indexes[1], max_power)
         diff = np.where((new_result_area - result_area) < 0)
         new_result_area[diff] = result_area[diff]
         result_area = np.copy(new_result_area)
     return new_result_area
 
-
-# def update_result_area(accesspoint_vect, result_area, cols=10, rows=10):
-#     for ap in accesspoint_vect:
-#         a = ap.x
-#         b = ap.y
-#         temp_y, temp_x = np.ogrid[-a:cols - a, -b:rows - b]
-#         mask_indexes = np.where(temp_x * temp_x + temp_y * temp_y <= ap.max_range)
-#         new_result_area = result_area
-#         new_result_area[mask_indexes] = ap.get_power(mask_indexes[0], mask_indexes[1])
-#         diff = np.where(new_result_area - result_area < 0)
-#         new_result_area[diff] = result_area[diff]
-#     return new_result_area
 
 def generate_individuals(n=10, cols=COLS, rows=ROWS):
     individuals = np.zeros((n, cols, rows))
