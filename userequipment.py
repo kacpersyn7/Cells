@@ -1,12 +1,11 @@
+from area import Area
+from globals import *
+
+
 class UserEquipment:
-    def __init__(self, multipoint_array, valid_capacity):
-        self.multipoint_array = multipoint_array
-        self.valid_capacity = valid_capacity
-        self.access_point_id = None
+    def __init__(self, max_request, x_size=COLS, y_size=ROWS):
+        self.area = Area(x_size, y_size)
+        self.max_request = max_request
 
-    @property
-    def get_point(self):
-        return self.point
-
-    def assign_access_point(self, access_point_id):
-        self.access_point_id = access_point_id
+    def get_random(self):
+        return self.area.generate_random(self.max_request)
