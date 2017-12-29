@@ -1,3 +1,6 @@
+import numpy as np
+
+import globals as g
 from accesspoint import *
 
 
@@ -20,7 +23,6 @@ class Individual:
     def update_result_area(self, access_area_fun, get_power, dim):
         access_points = np.where(self.ap_bitmap[dim] == 1)
         new_result_area = np.copy(self.result_area)
-        print(new_result_area.shape)
         for x, y in zip(access_points[0], access_points[1]):
             temp_y, temp_x = np.ogrid[-x:self.x_size - x, -y:self.y_size - y]
             mask_indexes = np.where(access_area_fun(temp_x, temp_y))
