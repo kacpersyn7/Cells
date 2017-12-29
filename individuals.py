@@ -15,3 +15,9 @@ class Individuals:
         random_list = np.random.normal(mean, deviation, size=(self.population_size, self.dimension))
         for i in range(self.population_size):
             self.individuals_list[i].generate_first_individual(random_list[i])
+            self.update_individual(i)
+
+    def update_individual(self, i):
+        for j in range(self.dimension):
+            self.individuals_list[i].update_result_area(self.access_points[j].access_area_fun,
+                                                        self.access_points[j].get_power, j)
