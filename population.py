@@ -10,9 +10,9 @@ class Population:
         self.dimension = len(access_points_types)
         self.access_points = [AccessPoint(**x) for x in access_points_types]
         self.costs = np.array([x.cost for x in self.access_points])
-        self.individuals_list = np.array([Particle(self.dimension) for i in range(population_size)])
+        self.individuals_list = np.array([Particle(self.dimension, self.access_points) for i in range(population_size)])
         self.global_best = 0
-        self.global_best_id = 0
+        self.global_best_bitmap = np.zeros((self.dimension, self.x_size, self.y_size))
         self.people = np.random.randint(0, 250, size=(self.x_size, self.y_size))
 
     def generate_first_population(self, low=1, high=100):
@@ -21,21 +21,9 @@ class Population:
             self.individuals_list[i].generate_first_individual(random_list[i])
             self.update_individual(i)
 
-    def update_individual(self, i):
-        for ap_id in range(self.dimension):
-            self.individuals_list[i].update_result_area(self.access_points[ap_id].access_area_fun,
-                                                        self.access_points[ap_id].get_power, ap_id)
-
-    def update_every_individual(self):
-        for i in range(self.population_size):
-            self.update_individual(i)
-
     def calculate_target_function(self):
-        self.update_every_individual()
-        self.global_best = max(
-            individual.target_function(self.people, self.costs) for individual in self.individuals_list)
-        self.global_best_id = \
-        np.where(self.individuals_list == max(self.individuals_list, key=lambda x: x.target_value))[0]
+        for particle in self.individuals_list:
+            particle.target_function(self.people, self.costs)  # arguments should be in particle class
 
     def get_individual(self, i):
         return self.individuals_list[i]
