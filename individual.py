@@ -1,5 +1,3 @@
-import numpy as np
-
 import globals as g
 from accesspoint import *
 
@@ -13,6 +11,7 @@ class Individual:
         self.result_area = np.zeros((x_size, y_size))
         self.ap_bitmap = np.zeros((dimension, x_size, y_size))
         self.dimension = dimension
+        self.target_value = 0.0
         # self.access_points = [AccessPoint(**x) for x in access_points_types]
 
     def generate_first_individual(self, probability):
@@ -30,6 +29,10 @@ class Individual:
             diff = np.where((new_result_area - self.result_area) < 0)
             new_result_area[diff] = self.result_area[diff]
             self.result_area = np.copy(new_result_area)
-        
-    def target_function(self):
-        pass
+
+    def target_function(self, users_area, costs):
+        total_aps = np.sum(self.ap_bitmap, axis=(1, 2))
+        total_cost = total_aps.dot(costs)
+        new_area = users_area - self.result_area
+        self.target_value = np.sum(new_area[np.where(new_area > 0)]) - total_cost
+        return self.target_value
