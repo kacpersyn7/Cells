@@ -19,7 +19,6 @@ class Population:
         random_list = np.random.uniform(low, high, size=(self.population_size, self.dimension))
         for i in range(self.population_size):
             self.individuals_list[i].generate_first_individual(random_list[i])
-            self.update_individual(i)
 
     def calculate_target_function(self):
         for particle in self.individuals_list:
