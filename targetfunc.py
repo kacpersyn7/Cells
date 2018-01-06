@@ -20,4 +20,5 @@ class Target:
         total_cost = total_aps.dot(self.costs)
         new_area = self.users_area - self.result_area
         target = np.sum(new_area[np.where(new_area > 0)]) - total_cost
+        self.result_area = np.zeros((self.x_size, self.y_size))
         return target
