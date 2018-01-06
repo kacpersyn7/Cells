@@ -10,7 +10,8 @@ class Target:
         self.dimension = len(access_points_types)
         self.access_points = [AccessPoint(**x) for x in access_points_types]
         self.costs = np.array([x.cost for x in self.access_points])
-        self.users_area = people
+        self.users_area = np.zeros((self.x_size, self.y_size))
+        self.users_area[10][10] = 40
         self.result_area = np.zeros((self.x_size, self.y_size))
 
     def __call__(self, multidimensional_bitmap):
