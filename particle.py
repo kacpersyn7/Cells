@@ -1,8 +1,6 @@
-import scipy
-
 from accesspoint import *
 
-
+sigmoid = lambda x: 1 / (1 + np.exp(-x))
 ##For more than one type of accesspoint
 
 class Particle:
@@ -34,8 +32,8 @@ class Particle:
         return self.p_bitmap, self.p_target
 
     def iterate(self, global_best, global_target, omega=1, phip=1, phig=1):
-        self.velocity = omega * self.velocity + phip * (self.p_bitmap) + phig * (
-            global_best)
+        self.velocity = omega * self.velocity + phip * (self.p_bitmap - self.x_bitmap) + phig * (
+                global_best - self.x_bitmap)
         self.calculate_new_x()
         self.x_target = self.target_func(self.x_bitmap)
 
@@ -52,8 +50,10 @@ class Particle:
             # new = self.x_bitmap[i] +
             # probability = ((new - new.min()) / (new.max() - new.min()))
             # probability = preprocessing.normalize(new)
-            probability = scipy.special.expit(self.velocity[i])
-            self.x_bitmap[i] = (np.random.random_sample((self.x_size, self.y_size)) >= probability).astype(int)
+
+            probability = sigmoid(self.velocity[i])
+            self.x_bitmap[i] = np.logical_not(
+                np.random.random_sample((self.x_size, self.y_size)) >= probability).astype(int)
             #
             # self.x_bitmap[i] = np.array([np.random.choice([0, 1], p=[1 - i, i]) for i in
             #                              probability.reshape(self.x_size * self.y_size)]).reshape(
