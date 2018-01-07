@@ -28,4 +28,4 @@ class AccessPoint:
             new_result_area[mask_indexes] = self.get_power(x, y, mask_indexes[0], mask_indexes[1])
             diff = np.where((new_result_area - result_area) < 0)
             new_result_area[diff] = result_area[diff]
-            result_area = np.copy(new_result_area)
+        return new_result_area

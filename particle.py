@@ -1,3 +1,5 @@
+import scipy
+
 from accesspoint import *
 
 
@@ -31,20 +33,28 @@ class Particle:
     def get_local_best(self):
         return self.p_bitmap, self.p_target
 
-    def iterate(self, global_best, omega=1, phip=1, phig=1):
-        self.velocity = omega * self.velocity + phip * (self.p_bitmap - self.x_bitmap) + phig * (
-                global_best - self.x_bitmap)
-        print(self.velocity)
+    def iterate(self, global_best, global_target, omega=1, phip=1, phig=1):
+        self.velocity = omega * self.velocity + phip * (self.p_bitmap) + phig * (
+            global_best)
         self.calculate_new_x()
         self.x_target = self.target_func(self.x_bitmap)
+
         if self.x_target > self.p_target:
             self.p_target = self.x_target
-            self.p_target = np.copy(self.x_target)
+            self.p_bitmap = np.copy(self.x_bitmap)
+            if self.p_target > global_target:
+                print("jesteem")
+                return self.p_bitmap, self.p_target
+        return None, None
 
     def calculate_new_x(self):
         for i in range(self.dimension):
-            new = self.x_bitmap[i] + self.velocity[i]
-            probability = (new - new.min()) / (new.max() - new.min())
-            self.x_bitmap[i] = np.array([np.random.choice([0, 1], p=[1 - i, i]) for i in
-                                         probability.reshape(self.x_size * self.y_size)]).reshape(
-                (self.x_size, self.y_size))
+            # new = self.x_bitmap[i] +
+            # probability = ((new - new.min()) / (new.max() - new.min()))
+            # probability = preprocessing.normalize(new)
+            probability = scipy.special.expit(self.velocity[i])
+            self.x_bitmap[i] = (np.random.random_sample((self.x_size, self.y_size)) >= probability).astype(int)
+            #
+            # self.x_bitmap[i] = np.array([np.random.choice([0, 1], p=[1 - i, i]) for i in
+            #                              probability.reshape(self.x_size * self.y_size)]).reshape(
+            #     (self.x_size, self.y_size))
