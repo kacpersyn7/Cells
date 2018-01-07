@@ -16,10 +16,14 @@ class Target:
 
     def __call__(self, multidimensional_bitmap):
         for i in range(self.dimension):
-            self.access_points[i].update_result_area(multidimensional_bitmap[i], self.result_area)
+            self.result_area = self.access_points[i].update_result_area(multidimensional_bitmap[i], self.result_area)
         total_aps = np.sum(multidimensional_bitmap, axis=(1, 2))
+        # print(total_aps)
         total_cost = total_aps.dot(self.costs)
-        new_area = self.users_area - self.result_area
-        target = np.sum(new_area[np.where(new_area > 0)]) - total_cost
+        # print(total_cost)
+        new_area = self.result_area - self.users_area
+        # print(new_area)
+        # print(np.sum(new_area[np.where(self.users_area > 0)]))
+        target = 10 * np.sum(new_area[np.where(self.users_area > 0)]) - total_cost
         self.result_area = np.zeros((self.x_size, self.y_size))
         return target
