@@ -1,7 +1,7 @@
 import numpy as np
 
-COLS = 20
-ROWS = 20
+COLS = 50
+ROWS = 50
 
 access_points_types = [{'cost': 100, 'max_power': 100, 'access_area_fun': lambda x,
                                                                                  y: x * x + y * y <= 9,

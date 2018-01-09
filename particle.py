@@ -39,7 +39,6 @@ class Particle:
         return None, None
 
     def calculate_new_x(self):
-        for i in range(self.dimension):
-            probability = sigmoid(self.velocity[i])
-            self.x_bitmap[i] = np.logical_not(
-                np.random.random_sample((self.x_size, self.y_size)) >= probability).astype(int)
+        probability = sigmoid(self.velocity)
+        self.x_bitmap = np.logical_not(
+            np.random.random_sample((self.x_size, self.y_size)) >= probability).astype(int)
