@@ -1,7 +1,7 @@
 import numpy as np
 
-COLS = 20
-ROWS = 20
+COLS = 50
+ROWS = 50
 
 
 def generate_area(x, y, resolution):
