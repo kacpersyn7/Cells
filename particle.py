@@ -41,4 +41,4 @@ class Particle:
     def calculate_new_x(self):
         probability = sigmoid(self.velocity)
         self.x_bitmap = np.logical_not(
-            np.random.random_sample((self.x_size, self.y_size)) >= probability).astype(int)
+            np.random.random_sample((self.dimension, self.x_size, self.y_size)) >= probability).astype(int)
