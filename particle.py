@@ -1,6 +1,6 @@
 from accesspoint import *
 from globals import sigmoid
-
+import time
 
 class Particle:
     def __init__(self, target_func, x_randoms):
@@ -27,8 +27,10 @@ class Particle:
         return self.p_bitmap, self.p_target
 
     def iterate(self, global_best, global_target, omega=1, phip=1, phig=1):
+
         self.velocity = omega * self.velocity + phip * (self.p_bitmap - self.x_bitmap) + phig * (
                 global_best - self.x_bitmap)
+
         self.calculate_new_x()
         self.x_target = self.target_func(self.x_bitmap)
         if self.x_target > self.p_target:

@@ -1,7 +1,6 @@
 from particle import *
 from userequipment import *
 
-
 class Target:
     def __init__(self, people=np.random.randint(0, 20, size=(g.COLS, g.ROWS)),
                  access_points_types=g.access_points_types):
@@ -17,6 +16,7 @@ class Target:
         for i in range(self.dimension):
             self.result_area = self.access_points[i].update_result_area(multidimensional_bitmap[i], self.result_area)
         total_aps = np.sum(multidimensional_bitmap, axis=(1, 2))
+
         total_cost = total_aps.dot(self.costs)
         new_area = self.result_area - self.users_area
         target = 10 * np.sum(new_area[np.where(self.users_area > 0)]) - total_cost
