@@ -1,7 +1,7 @@
 import numpy as np
 from numba import jit,vectorize
-COLS = 200
-ROWS = 200
+COLS = 50
+ROWS = 50
 
 access_points_types = [{'cost': 100, 'max_power': 100, 'radius': 3},
 
