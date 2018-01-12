@@ -1,12 +1,12 @@
-import numpy as np
 import numba
+import numpy as np
+
 import globals as g
 
 
-
 @numba.jit(nopython=True, cache=True)
-#@numba.vectorize([numba.types.Array(numba.float64,2,'C')(numba.types.Array(numba.float64,2,'C'),numba.int64,numba.types.Array(numba.float64,2,'C'),numba.int64,numba.int64,numba.types.Array(numba.float64,2,'C'))])
-def update_result_area_outer(ap_bitmap,radius,result_area,x_size,y_size,circle):
+# @numba.vectorize([numba.types.Array(numba.float64,2,'C')(numba.types.Array(numba.float64,2,'C'),numba.int64,numba.types.Array(numba.float64,2,'C'),numba.int64,numba.int64,numba.types.Array(numba.float64,2,'C'))])
+def update_result_area_outer(ap_bitmap, radius, result_area, x_size, y_size, circle):
     access_points = np.where(ap_bitmap == 1)
     for x, y in zip(access_points[0], access_points[1]):
         diff_x = radius - x
@@ -38,14 +38,25 @@ class AccessPoint:
         self.x_size = x_size
         self.y_size = y_size
         self.radius = radius
-        self.circle = np.copy(access_area_fun(np.ogrid[-radius:(radius + 1), -radius:(radius + 1)]))
-        self.circle[self.circle > radius ** 2] = -2
-        self.circle = (1. / (self.circle + 0.5)) * self.max_power
-        self.circle[self.circle < 0] = 0
+        self.circle = self.init_circle()
+
+    def get_power(self, dist):
+        return (1. / dist) * self.max_power
 
     def update_result_area(self, ap_bitmap, result_area):
-        result_area = update_result_area_outer(ap_bitmap, self.radius, result_area, self.x_size, self.y_size, self.circle)
+        result_area = update_result_area_outer(ap_bitmap, self.radius, result_area, self.x_size, self.y_size,
+                                               self.circle)
         return result_area
+
+    def init_circle(self):
+        circle = np.copy(
+            self.access_area_fun(np.ogrid[-self.radius:(self.radius + 1), -self.radius:(self.radius + 1)])).astype(
+            float)
+        circle[circle > self.radius ** 2] = -1
+        circle.itemset((self.radius, self.radius), 0.5)
+        circle = self.get_power(circle)
+        circle[circle < 0] = 0
+        return circle
 
     """def update_result_area(self, ap_bitmap, result_area):
         access_points = np.where(ap_bitmap == 1)
