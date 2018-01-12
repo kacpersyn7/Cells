@@ -1,6 +1,6 @@
 from accesspoint import *
 from globals import sigmoid
-import time
+
 
 class Particle:
     def __init__(self, target_func, x_randoms):
@@ -26,7 +26,10 @@ class Particle:
     def get_local_best(self):
         return self.p_bitmap, self.p_target
 
-    def iterate(self, global_best, global_target, omega=1, phip=1, phig=1):
+    def get_p_bitmap(self):
+        return self.p_bitmap
+
+    def iterate(self, global_best, omega=1, phip=1, phig=1):
 
         self.velocity = omega * self.velocity + phip * (self.p_bitmap - self.x_bitmap) + phig * (
                 global_best - self.x_bitmap)
@@ -36,9 +39,7 @@ class Particle:
         if self.x_target > self.p_target:
             self.p_target = self.x_target
             self.p_bitmap = np.copy(self.x_bitmap)
-            if self.p_target > global_target:
-                return self.p_bitmap, self.p_target
-        return None, None
+        return self.p_target
 
     def calculate_new_x(self):
         probability = sigmoid(self.velocity)

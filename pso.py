@@ -11,12 +11,14 @@ def pso(func, lb=0, up=7000, swarm_size=200, omega=1, phip=1, phig=1, maxiter=50
     g_bitmap, g_target = particles[g_iter].get_local_best()
     for j in range(maxiter):
         for particle in particles:
-            p_bitmap, p_target = particle.iterate(g_bitmap, omega, phip, phig)
+            p_target = particle.iterate(g_bitmap, omega, phip, phig)
             if p_target > g_target:
-                g_bitmap, g_target = p_bitmap, p_target
+                g_target = p_target
+                g_bitmap = particle.get_p_bitmap()
+
         #f j%100 == 0:
         print("Czas wykonania to:",(time.time()-start_time))
         start_time=time.time()
         print("iteracja ", str(j), " wynik ", str(g_target))
 
-    return g_array, g_target
+    return g_bitmap, g_target
