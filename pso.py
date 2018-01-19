@@ -3,7 +3,7 @@ import time
 from particle import *
 
 
-def pso(func, lb=0, up=7000, swarm_size=800, omega=1, phip=1, phig=1, maxiter=500, start_time=time.time()):
+def pso(func, lb=0, up=500, swarm_size=100, omega=1, phip=1, phig=1, maxiter=2000, start_time=time.time()):
     x_randoms = np.random.randint(lb, up, size=(swarm_size, func.dimension))
     particles = np.array([Particle(func, x_randoms[x]) for x in range(swarm_size)])
     g_iter = max(range(len(particles)), key=lambda i: particles[i].p_target)

@@ -1,11 +1,17 @@
+from numba import jit
+
 from accesspoint import *
-from globals import sigmoid
+
+
+@jit(nopython=True, parallel=True)
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
 
 
 class Particle:
     def __init__(self, target_func, x_randoms):
-        self.x_size = target_func.x_size
-        self.y_size = target_func.y_size
+        self.x_size = target_func.shape[0]
+        self.y_size = target_func.shape[1]
         self.dimension = target_func.dimension
         self.target_func = target_func
         self.x_bitmap = self.init_particle(x_randoms)
@@ -30,10 +36,8 @@ class Particle:
         return self.p_bitmap
 
     def iterate(self, global_best, omega=1, phip=1, phig=1):
-
         self.velocity = omega * self.velocity + phip * (self.p_bitmap - self.x_bitmap) + phig * (
                 global_best - self.x_bitmap)
-
         self.calculate_new_x()
         self.x_target = self.target_func(self.x_bitmap)
         if self.x_target > self.p_target:
