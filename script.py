@@ -20,13 +20,22 @@ def read_people_from_file(name, rows, cols):
                     people_heatmap[coords[0]][coords[1]] = power
     return people_heatmap
 
+def write2file(x,y):
+    with open("out.log",'w') as file:
+        for i in range(len(x)):
+            string = "x: " + str(x[i]) + " y: " + str(y[i]) + "\n"
+            file.write(string);
+
+
 if __name__ == "__main__":
     people = read_people_from_file("template_people",g.ROWS,g.COLS)
     my_func = Target(people)
-    best_bitmap, best_value = pso(my_func, 0, 900, 800, 1, 1, 1, 1000)
+    best_bitmap, best_value = pso(my_func, 0, 300, 200, 1, 1, 1, 1000)
 
     x, y = np.where(best_bitmap[1] == 1)
-
+    print(x)
+    print(y)
+    write2file(x,y)
     plt.plot(x, y, 'ro')
     plt.axis([0, g.COLS-1, 0, g.ROWS-1])
     plt.show()
