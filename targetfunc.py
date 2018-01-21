@@ -10,7 +10,7 @@ class Target:
 
     def __init__(self, people=np.random.randint(0, 20, size=(g.COLS, g.ROWS)),
                  access_points_types=g.access_points_types, people_function=lambda x: 10 * x,
-                 cost_function=lambda x: x):
+                 cost_function=lambda x: 6*x):
         self.shape = people.shape
         self.dimension = len(access_points_types)
         self.access_points = [AccessPoint(**x) for x in access_points_types]
@@ -25,7 +25,7 @@ class Target:
             result_area = self.access_points[i](multidimensional_bitmap[i], result_area)
         return result_area
 
-    """Wywołanie funkcji celu dla wielowymiarowej bitmapy"""
+    """Wywołanie funkcji celu dla wielowymiarowej bitmapy             czyli? accesspointow?? tylko obszaru zasiegów???          """
     def __call__(self, multidimensional_bitmap):
         total_aps = np.sum(multidimensional_bitmap, axis=(1, 2))
         total_cost = total_aps.dot(self.costs)
