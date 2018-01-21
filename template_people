@@ -1,3 +1,9 @@
-x: 11 y: 10 power: 100
-x: 12 y: 40 power: 1000
-x: 17 y: 22 power: 100
+x: 10 y: 10 power: 100
+x: 10 y: 11 power: 40
+x: 10 y: 9 power: 40
+x: 9 y: 10 power: 40
+x: 11 y: 10 power: 40
+x: 11 y: 11 power: 20
+x: 9 y: 11 power: 20
+x: 11 y: 9 power: 20
+x: 9 y: 9 power: 20
