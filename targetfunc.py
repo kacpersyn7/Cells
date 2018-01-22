@@ -1,5 +1,5 @@
 from particle import *
-
+import globals as g
 
 @jit(nopython=True, parallel=True)
 def sigmoid(x, L=200, k=10, x0=10):
