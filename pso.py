@@ -22,8 +22,8 @@ def pso(func, lb=0, up=500, swarm_size=100, omega=1, phip=1, phig=1, maxiter=200
             iteration_list.append(j)
             target_fun_list.append(g_target)
             best_bitmap_list.append(g_bitmap)
-            print("Czas wykonania to:",(time.time()-start_time))
-            start_time=time.time()
-            print("iteracja ", str(j), " wynik ", str(g_target))
+            #print("Czas wykonania to:",(time.time()-start_time))
+            #start_time=time.time()
+            #print("iteracja ", str(j), " wynik ", str(g_target))
 
     return iteration_list, best_bitmap_list, target_fun_list

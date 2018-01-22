@@ -27,15 +27,7 @@ def write2file(x,y, index):
             string = "x: " + str(x[i]) + " y: " + str(y[i]) + "\n"
             file.write(string)
 
-def separate_vectors(output):
-    iterated = []
-    best_function = []
-    best_map = []
-    for temp in output:
-        iterated = iterated.append([temp[0]])
-        best_map = best_map.append([temp[1]])
-        best_function = best_function.append([temp[2]])
-    return iterated, best_map,best_function
+
 
 if __name__ == "__main__":
     people = read_people_from_file("rand_people",g.ROWS,g.COLS)
@@ -49,9 +41,11 @@ if __name__ == "__main__":
     max_iter = 1000
     i = 0
     start_time2137= time.time()
+    plt.imshow(people)
+    plt.show()
 
-    out = pso(my_func, 0, 100, 200, 1, 1, 1, 500)
-    iterated, best_bitmap, target_f = separate_vectors(out)
+    iterated, best_bitmap, target_f = pso(my_func, 0, 100, 200, 1, 1, 1, 2500)
+
     x, y = np.where(best_bitmap[-1][1] == 1)
     write2file(x, y, i)
     i = i + 1

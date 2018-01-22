@@ -1,7 +1,7 @@
 import numpy as np
 
 def generate_random():
-    users=np.random.rand(20,20)*100
+    users=np.random.rand(40,40)*255
     with open("rand_people", 'w') as file:
         x, y = np.where(users > 0)
         for i in range(len(x)):
