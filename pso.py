@@ -3,6 +3,9 @@ import multiprocessing
 from particle import *
 
 def pso(func, lb=0, up=500, swarm_size=100, omega=1, phip=1, phig=1, maxiter=2000, start_time=time.time()):
+    target_fun_list = []
+    best_bitmap_list = []
+    iteration_list = []
     x_randoms = np.random.randint(lb, up, size=(swarm_size, func.dimension))
     particles = np.array([Particle(func, x_randoms[x]) for x in range(swarm_size)])
     g_iter = max(range(len(particles)), key=lambda i: particles[i].p_target)
@@ -15,9 +18,12 @@ def pso(func, lb=0, up=500, swarm_size=100, omega=1, phip=1, phig=1, maxiter=200
                 g_bitmap = particle.get_p_bitmap()
         # pool = multiprocessing.Pool(4)
         # g_target, g_bitmap = pool.map(iterate_particles, [g_bitmap, omega, phip, phig, particles])
-        if j%100 == 0:
+        if j%10 == 0:
+            iteration_list.append(j)
+            target_fun_list.append(g_target)
+            best_bitmap_list.append(g_bitmap)
             print("Czas wykonania to:",(time.time()-start_time))
             start_time=time.time()
             print("iteracja ", str(j), " wynik ", str(g_target))
 
-    return g_bitmap, g_target
+    return iteration_list, best_bitmap_list, target_fun_list
