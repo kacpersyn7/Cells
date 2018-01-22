@@ -10,7 +10,7 @@ class Target:
 
     def __init__(self, people=np.random.randint(0, 20, size=(g.COLS, g.ROWS)),
                  access_points_types=g.access_points_types, people_function=lambda x: 10 * x,
-                 cost_function=lambda x: 6*x):
+                 cost_function=lambda x: 4*x):
         self.shape = people.shape
         self.dimension = len(access_points_types)
         self.access_points = [AccessPoint(**x) for x in access_points_types]
