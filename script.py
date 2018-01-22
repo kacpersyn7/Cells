@@ -25,8 +25,17 @@ def write2file(x,y, index):
     with open(string2,'w') as file:
         for i in range(len(x)):
             string = "x: " + str(x[i]) + " y: " + str(y[i]) + "\n"
-            file.write(string);
+            file.write(string)
 
+def separate_vectors(output):
+    iterated = []
+    best_function = []
+    best_map = []
+    for temp in output:
+        iterated = iterated.append([temp[0]])
+        best_map = best_map.append([temp[1]])
+        best_function = best_function.append([temp[2]])
+    return iterated, best_map,best_function
 
 if __name__ == "__main__":
     people = read_people_from_file("rand_people",g.ROWS,g.COLS)
@@ -40,23 +49,22 @@ if __name__ == "__main__":
     max_iter = 1000
     i = 0
     start_time2137= time.time()
-    for om in omega:
-        for g in phig:
-            for p in phip:
-                for m_r in min_rand:
-                    for ma_r in max_rand:
-                        best_bitmap, best_value = pso(my_func, m_r, ma_r, population, om, p, g, max_iter)
-                        x, y = np.where(best_bitmap[1] == 1)
-                        write2file(x, y, i)
-                        i = i + 1
+
+    out = pso(my_func, 0, 100, 200, 1, 1, 1, 500)
+    iterated, best_bitmap, target_f = separate_vectors(out)
+    x, y = np.where(best_bitmap[-1][1] == 1)
+    write2file(x, y, i)
+    i = i + 1
     print("Calosc wykonywala sie: ", time.time()-start_time2137)
-    x, y = np.where(best_bitmap[1] == 1)
+    x, y = np.where(best_bitmap[-1][1] == 1)
     print(x)
     print(y)
-    write2file(x,y)
+    #write2file(x,y)
+    plt.plot(iterated, target_f, 'ro')
+    plt.show()
     plt.plot(x, y, 'ro')
     plt.axis([0, g.COLS-1, 0, g.ROWS-1])
-    x, y = np.where(best_bitmap[0] == 1)
+    x, y = np.where(best_bitmap[-1][0] == 1)
     plt.plot(x, y, 'bx'
                    '')
     plt.axis([0, g.COLS-1, 0, g.ROWS-1])
