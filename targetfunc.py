@@ -30,5 +30,5 @@ class Target:
         total_aps = np.sum(multidimensional_bitmap, axis=(1, 2))
         total_cost = total_aps.dot(self.costs)
         new_area = self.get_result_area(multidimensional_bitmap) - self.users_area
-        target = self.people_function(np.sum(new_area[np.where(self.users_area > 0)])) - self.cost_function(total_cost)
+        target = np.sum(new_area[np.where(self.users_area > 0)]) - total_cost
         return target
