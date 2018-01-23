@@ -14,7 +14,7 @@ def read_people_from_file(name, rows, cols):
             for char in parse:
                 if char.isnumeric():
                     coords.append(int(char))
-            print(coords)
+            # print(coords)
             if coords[0] < cols:
                 if coords[1] < rows:
                     power = coords[-1]
@@ -32,11 +32,11 @@ def write2file(num_array, name, index):
 
 def write2file_out(out, index, people_f_name, population):
     iterated, best_bitmap, target_f = zip(*out)
-    string = "bitmapa_router_1_" + people_f_name + "_" + str(index) + str(population)
+    string = "bitmapa_router_1_" + people_f_name + "_" + str(index) + "_" + str(population)
     write2file(best_bitmap[-1][0], string,index)
-    string = "bitmapa_router_2_" + people_f_name + "_" + str(index) + str(population)
+    string = "bitmapa_router_2_" + people_f_name + "_" + str(index) + "_" + str(population)
     write2file(best_bitmap[-1][0], string, index)
-    string = "iterate_target_func_" + people_f_name + "_" + str(index) + str(population)
+    string = "iterate_target_func_" + people_f_name + "_" + str(index) + "_" + str(population)
     with open(string, 'w') as file:
         for it in range(len(iterated)):
             string2 = "iterate " + str(iterated[it]) + " tarrget_func: " + str(target_f[it]) +  "\n"
@@ -59,7 +59,8 @@ if __name__ == "__main__":
                 people = read_people_from_file(files, g.ROWS, g.COLS)
                 my_func = Target(people)
                 out = pso(my_func, 0, 1000, quanity, 1, 1, 1, 2000)
-                write2file_out(out, i, files, quanity)
+                write2file_out(out, i, files, quanity) # generuje 16*3 plików XDDDDDD
+                print("Wywolalem sie ")
 
     # x, y = np.where(best_bitmap[-1][1] == 1)
     # write2file_out(out,0,"kolka_i_kwadraty")
