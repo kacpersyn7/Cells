@@ -35,7 +35,7 @@ def write2file_out(out, index, people_f_name, population):
     string = "bitmapa_router_1_" + people_f_name + "_" + str(index) + "_" + str(population)
     write2file(best_bitmap[-1][0], string,index)
     string = "bitmapa_router_2_" + people_f_name + "_" + str(index) + "_" + str(population)
-    write2file(best_bitmap[-1][0], string, index)
+    write2file(best_bitmap[-1][1], string, index)
     string = "iterate_target_func_" + people_f_name + "_" + str(index) + "_" + str(population)
     with open(string, 'w') as file:
         for it in range(len(iterated)):
@@ -45,23 +45,30 @@ def write2file_out(out, index, people_f_name, population):
 if __name__ == "__main__":
     people = read_people_from_file("kolka_i_kwadraty", g.ROWS, g.COLS)
 
-    files_with_people=["studnia_potencjalu.txt", "kolka_i_kwadraty", "Pliki_z_kolkami", "kolka_i_kwadraty_z_szumem"]
+    files_with_people=["studnia_potencjalu.txt", "kolka_i_kwadraty", "Plik_z_kolkami", "kolka_i_kwadraty_z_szumem"]
     population = [100, 200, 500, 1000]
     my_func = Target(people)
     i = 0
+    counter = 16*3
+    print("Sztartuuuuje")
     #
     # out = pso(my_func, 0, 100, 200, 1, 1, 1, 2000)
     # iterated, best_bitmap, target_f = zip(*out)
-
+    start_time = time.time()
     for files in files_with_people:
         for quanity in population:
             for i in range(3):
                 people = read_people_from_file(files, g.ROWS, g.COLS)
                 my_func = Target(people)
-                out = pso(my_func, 0, 1000, quanity, 1, 1, 1, 2000)
+                out = pso(my_func, 0, 1250, quanity, 1, 1, 1, 2500)
+                counter = counter - 1
+                print("Jeszcze tylko: ",counter)
                 write2file_out(out, i, files, quanity) # generuje 16*3 plików XDDDDDD
-                print("Wywolalem sie ")
 
+                print("Wywolalem sie ")
+    diff = time.time() - start_time
+    diff = diff/60
+    print("Trwałem: ",diff," minut")
     # x, y = np.where(best_bitmap[-1][1] == 1)
     # write2file_out(out,0,"kolka_i_kwadraty")
     # #write2file(x, y, i)
