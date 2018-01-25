@@ -50,3 +50,15 @@ def read_from_file_it_targ(name):
             it.append(int(parse[1]))
             tf.append(float(parse[3]))
     return it, tf
+
+def write2file_out_out_another_f(out, index, people_f_name, population, k, x0):
+    iterated, best_bitmap, target_f = zip(*out)
+    string = "bitmapa_router_1_" + people_f_name + "_" + str(index) + "_" + str(population) + "_" + str(k) + "_" + str(x0)
+    write2file(best_bitmap[-1][0], string,index)
+    string = "bitmapa_router_2_" + people_f_name + "_" + str(index) + "_" + str(population) + "_" + str(k) + "_" + str(x0)
+    write2file(best_bitmap[-1][1], string, index)
+    string = "iterate_target_func_" + people_f_name + "_" + str(index) + "_" + str(population) + "_" + str(k) + "_" + str(x0)
+    with open(string, 'w') as file:
+        for it in range(len(iterated)):
+            string2 = "iterate " + str(iterated[it]) + " tarrget_func: " + str(target_f[it]) +  "\n"
+            file.write(string2)
