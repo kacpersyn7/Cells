@@ -38,7 +38,7 @@ class AccessPoint:
         self.circle = self.init_circle()
 
     def get_power(self, dist):
-        return (1. / dist) * self.max_power
+        return (1. / (dist * 0.7)) * self.max_power
 
     def init_circle(self):
         circle = np.copy(
