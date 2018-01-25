@@ -27,16 +27,16 @@ def write2file(num_array, name, index):
             file.write(string)
 
 
-def write2file_out(out, index, people_f_name, population):
+def write2file_out(out, index, people_f_name, population, omega, phip, phig):
     iterated, best_bitmap, target_f = zip(*out)
-    string = "bitmapa_router_1_" + people_f_name + "_" + str(index) + "_" + str(population)
-    write2file(best_bitmap[-1][0], string, index)
-    string = "bitmapa_router_2_" + people_f_name + "_" + str(index) + "_" + str(population)
+    string = "bitmapa_router_1_" + people_f_name + "_" + str(index) + "_" + str(population) + "_" + str(omega) + "_" + str(phip) + "_" + str(phig)
+    write2file(best_bitmap[-1][0], string,index)
+    string = "bitmapa_router_2_" + people_f_name + "_" + str(index) + "_" + str(population) + "_" + str(omega) + "_" + str(phip) + "_" + str(phig)
     write2file(best_bitmap[-1][1], string, index)
-    string = "iterate_target_func_" + people_f_name + "_" + str(index) + "_" + str(population)
+    string = "iterate_target_func_" + people_f_name + "_" + str(index) + "_" + str(population) + "_" + str(omega) + "_" + str(phip) + "_" + str(phig)
     with open(string, 'w') as file:
         for it in range(len(iterated)):
-            string2 = "iterate " + str(iterated[it]) + " tarrget_func: " + str(target_f[it]) + "\n"
+            string2 = "iterate " + str(iterated[it]) + " tarrget_func: " + str(target_f[it]) +  "\n"
             file.write(string2)
 
 

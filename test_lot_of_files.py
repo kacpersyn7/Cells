@@ -1,4 +1,4 @@
-import script
+import input_output
 from pso import *
 from targetfunc import *
 
@@ -13,7 +13,7 @@ if __name__ == "__main__":
         for phig in phig_list:
             for phip in phip_list:
                 for om in omega:
-                    people = script.read_people_from_file(file, g.COLS, g.ROWS)
+                    people = input_output.read_people_from_file(file, g.COLS, g.ROWS)
                     my_func = Target(people)
                     out = pso(my_func, 0, 1250, 500, om, phip, phig, 2500)
-                    script.write2file_out(out,0,file,500,om,phip,phig)
+                    input_output.write2file_out(out,0,file,500,om,phip,phig)
