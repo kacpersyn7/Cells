@@ -1,6 +1,6 @@
 import time
-
-from particle import *
+import numpy as np
+from particle import Particle
 
 
 def pso(func, lb=0, up=500, swarm_size=100, omega=1, phip=1, phig=1, maxiter=2000, start_time=time.time()):
@@ -17,7 +17,7 @@ def pso(func, lb=0, up=500, swarm_size=100, omega=1, phip=1, phig=1, maxiter=200
                 g_target = p_target
                 g_bitmap = particle.get_p_bitmap()
                 results.append((j + 1, g_bitmap, g_target))
-        if j % 10 == 0:
+        if j % 100 == 0:
             print("Czas wykonania to:", (time.time() - start_time))
             start_time = time.time()
             print("iteracja ", str(j), " wynik ", str(g_target))

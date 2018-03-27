@@ -1,6 +1,6 @@
 from numba import jit
-
-from accesspoint import *
+import numpy as np
+from accesspoint import AccessPoint
 
 
 @jit(nopython=True, parallel=True)

@@ -1,7 +1,10 @@
-from input_output import *
-from input_output import *
-from pso import *
-from targetfunc import *
+from pso import pso
+from input_output import read_people_from_file
+import time
+from targetfunc import Target
+import graphics
+import numpy as np
+import globals as g
 
 if __name__ == "__main__":
     people = read_people_from_file("kolka_i_kwadraty", g.ROWS, g.COLS)
@@ -13,6 +16,6 @@ if __name__ == "__main__":
     x, y = np.where(best_bitmap[-1][1] == 1)
     start_time2137 = time.time()
     print("Calosc wykonywala sie: ", time.time() - start_time2137)
-    show_and_save_target_function(iterated, target_f)
-    show_and_save_accesspoints(best_bitmap[-1])
-    show_and_save_power(people, heatmap)
+    graphics.show_and_save_target_function(iterated, target_f)
+    graphics.show_and_save_accesspoints(best_bitmap[-1])
+    graphics.show_and_save_power(people, heatmap)
