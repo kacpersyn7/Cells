@@ -5,29 +5,26 @@ import numpy as np
 
 def show_and_save_target_function(iterated, target_f, name='target_func.png'):
     fig_target = plt.figure()
-    plt.title('Target value, max=' + str(target_f[-1]) + 'in:' + str(iterated[-1]) + 'iterations')
+    plt.title(f"Target value, max = {target_f[-1]:.2f}" + ' in: ' + str(iterated[-1]) + ' iterations')
     plt.plot(iterated, target_f, 'ro')
     plt.savefig(name, bbox_inches='tight', pad_inches=0.0)
     plt.show()
     return fig_target
 
-
 def show_and_save_accesspoints(bitmap, name='aps.png'):
     fig_aps = plt.figure()
-    x, y = np.where(bitmap[1] == 1)
     fig_aps.suptitle('Accesspoints')
-    plt.plot(x, y, 'ro', label="Typ 0")
-    plt.axis([0, bitmap.shape[1] - 1, 0, bitmap.shape[2] - 1])
-    x, y = np.where(bitmap[0] == 1)
-    plt.plot(x, y, 'bx', label="Typ 1")
-    plt.axis([0, bitmap.shape[1] - 1, 0, bitmap.shape[2] - 1])
+    for i in range(len(bitmap)):
+        x, y = np.where(bitmap[i] == 1)
+        plt.plot(x, y, 'o', label="Typ"+str(i))
+        plt.axis([0, bitmap.shape[1] - 1, 0, bitmap.shape[2] - 1])
     plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     plt.savefig(name, bbox_inches='tight', pad_inches=0.0)
     plt.show()
     return fig_aps
 
 
-def show_and_save_power(people, heatmap, name='power_png'):
+def show_and_save_power(people, heatmap, name='power.png'):
     fig_power = plt.figure()
     # fig_power.suptitle('Moc', fontsize=12)
     grid = axes_grid1.AxesGrid(

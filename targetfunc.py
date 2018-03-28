@@ -1,6 +1,7 @@
 import globals as g
-from particle import *
-
+from numba import jit
+import numpy as np
+from accesspoint import AccessPoint
 
 @jit(nopython=True, parallel=True)
 def sigmoid(x, L=200, k=10, x0=10):
