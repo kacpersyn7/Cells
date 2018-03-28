@@ -1,7 +1,7 @@
 # Cells
 ## TO DO:
 
-<li>paralize and optimize algorithm
+<li>parallelizing of alghoritm 
 <li>write documentaction
 <li>improve interface
 
